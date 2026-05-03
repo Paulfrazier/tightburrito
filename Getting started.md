@@ -1,0 +1,12 @@
+- Building an app, can start as we app, will eventually have iOS
+- Called tight burrito
+- wts file is what I started with claude desktop
+- goal
+	- upload a photo of a burrito
+	- validate it is a burrito
+	- assign a score of how tight the burrito is. ideally automated. being wrong is ok, do want it to get better eventually and offer feedback.
+	- a bit of a joke with friends but if AI can actually id it, and offer stinging feedback on loose burritos that would be great
+	- eventually may want to allow human feedback to hone the scoring
+	- social scoring
+	- maybe voting
+	- showcasing the best burritos.
