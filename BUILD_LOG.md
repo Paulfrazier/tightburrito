@@ -2,6 +2,32 @@
 
 Append-only log of changes. Each entry: prompt → problem → solution → key decisions → files changed.
 
+## Open TODOs
+
+- **Rate-limit anonymous `/score`** — currently `POST /score` accepts anonymous uploads with no cap, which means anyone with the URL can burn through the Anthropic credits on the account. Haiku 4.5 vision is ~$0.003/scan so this isn't urgent, but worth a SlowAPI middleware (e.g., 10/hour per IP, unlimited for signed-in users) before sharing the link beyond the friend group or letting it get scraped. Backend file to touch: `backend/app/api/score.py`. Add `slowapi` to `requirements.txt`.
+- **Set Cloudflare R2 spend caps** — Cloudflare doesn't enforce a hard limit on the R2 free tier; if traffic spikes past 10 GB storage / 1M Class A / 10M Class B ops per month, you get billed. Set a "Notification" alert in the Cloudflare dashboard (Notifications → Add) for R2 usage thresholds, and consider a billing cap. There's no native "shut it off at $X" in Cloudflare like there is in AWS, so the play is alerts + a Worker that returns 429 once a usage counter trips. For now, just set email alerts at 50% / 80% / 100% of free tier.
+
+---
+
+## 2026-05-05 — Mobile UX polish
+
+**User prompt:** "looking good. need the photo upload to allow from libaray too. and top menu looks weird on mobile"
+
+**Problem:**
+1. The file input on `Home.jsx` had `capture="environment"` which forces mobile browsers to open the camera directly, blocking the option to pick from photo library.
+2. Header was too crowded on small screens — long brand text "🌯 Tight Burrito" + "Feed" / "Leaderboard" / "My Burritos" + "Sign in" + "Sign up" overflowed or wrapped weirdly on ~375px wide phones.
+
+**Solution:**
+1. Removed `capture="environment"` so the OS picker offers Take Photo + Library + Browse Files. Updated helper text.
+2. Header now collapses cleanly on mobile:
+   - Brand: `🌯 TB` on mobile, `🌯 Tight Burrito` on `sm:` (≥640px)
+   - Nav labels shortened: "Leaderboard" → "Top", "My Burritos" → "Mine"
+   - "My Burritos" link only renders when signed in (avoids the link 404'ing for visitors)
+   - Combined Sign in / Sign up into a single "Sign in" amber button (Clerk modal lets users switch to sign-up tab)
+   - Tighter gaps on mobile (`gap-3`) widening to `gap-6` on sm+
+
+**Files changed:** `frontend/src/pages/Home.jsx`, `frontend/src/components/Header.jsx`
+
 ---
 
 ## 2026-05-03 — Initial scaffold (social-ready MVP)

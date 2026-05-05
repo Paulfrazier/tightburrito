@@ -72,7 +72,7 @@ export default function Home() {
             <div>
               <p className="font-semibold text-stone-800 text-lg">Upload a burrito photo</p>
               <p className="text-stone-500 text-sm mt-1">
-                Click to select · mobile camera opens automatically
+                Take a photo or pick one from your library
               </p>
             </div>
           </div>
@@ -80,7 +80,6 @@ export default function Home() {
             ref={fileInputRef}
             type="file"
             accept="image/*"
-            capture="environment"
             onChange={handleFileSelect}
             className="hidden"
           />
